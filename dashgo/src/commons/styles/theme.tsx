@@ -11,14 +11,6 @@ const breakpoints = createBreakpoints({
 })
 
 const theme = extendTheme({
-  style: {
-    global: {
-      body: {
-        bg: 'gray.900',
-        color: 'gray.50',
-      },
-    },
-  },
   colors: {
     black: '#16161D',
     gray: {
@@ -32,6 +24,14 @@ const theme = extendTheme({
       '200': '#B3B5C6',
       '100': '#D1D2DC',
       '50': '#eeeef2',
+    },
+  },
+  styles: {
+    global: {
+      body: {
+        bg: 'gray.900',
+        color: 'gray.50',
+      },
     },
   },
   fonts,
