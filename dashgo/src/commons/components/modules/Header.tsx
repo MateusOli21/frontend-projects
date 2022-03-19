@@ -19,6 +19,7 @@ export const Header: React.FC = () => {
       marginX="auto"
       align="center"
       px="6"
+      maxW="1480px"
     >
       <Text fontSize="2xl" fontWeight="bold" letterSpacing="tight" width="64">
         dashgo{' '}
