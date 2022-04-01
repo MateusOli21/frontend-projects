@@ -1,4 +1,5 @@
 import React from 'react'
+import { RiAddLine } from 'react-icons/ri'
 import {
   Box,
   Button,
@@ -17,7 +18,6 @@ import {
 
 import { Header } from '@commons/components/modules/Header'
 import { Sidebar } from '@commons/components/modules/Sidebar'
-import { RiAddLine } from 'react-icons/ri'
 import { Pagination } from '@commons/components/modules/Pagination'
 
 const UserList = () => {
