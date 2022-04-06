@@ -1,5 +1,6 @@
-import { Box, Icon, Link, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
+import Link from 'next/link'
+import { Box, Flex, Icon, Stack, Text } from '@chakra-ui/react'
 import { RiContactsLine, RiDashboardLine } from 'react-icons/ri'
 
 export const Sidebar: React.FC = () => {
@@ -12,17 +13,21 @@ export const Sidebar: React.FC = () => {
           </Text>
 
           <Stack spacing="4" mt="8" align="stretch">
-            <Link display="flex" alignItems="center">
-              <Icon as={RiDashboardLine} fontSize="20" />
-              <Text ml="4" fontWeight="medium">
-                Dashboard
-              </Text>
+            <Link href="/dashboard">
+              <Flex display="flex" alignItems="center">
+                <Icon as={RiDashboardLine} fontSize="20" />
+                <Text ml="4" fontWeight="medium">
+                  Dashboard
+                </Text>
+              </Flex>
             </Link>
-            <Link display="flex" alignItems="center">
-              <Icon as={RiContactsLine} fontSize="20" />
-              <Text ml="4" fontWeight="medium">
-                Usuários
-              </Text>
+            <Link href="/users">
+              <Flex display="flex" alignItems="center">
+                <Icon as={RiContactsLine} fontSize="20" />
+                <Text ml="4" fontWeight="medium">
+                  Usuários
+                </Text>
+              </Flex>
             </Link>
           </Stack>
         </Box>
@@ -33,18 +38,18 @@ export const Sidebar: React.FC = () => {
           </Text>
 
           <Stack spacing="4" mt="8" align="stretch">
-            <Link display="flex" alignItems="center">
+            <Flex display="flex" alignItems="center">
               <Icon as={RiDashboardLine} fontSize="20" />
               <Text ml="4" fontWeight="medium">
                 Dashboard
               </Text>
-            </Link>
-            <Link display="flex" alignItems="center">
+            </Flex>
+            <Flex display="flex" alignItems="center">
               <Icon as={RiContactsLine} fontSize="20" />
               <Text ml="4" fontWeight="medium">
                 Usuários
               </Text>
-            </Link>
+            </Flex>
           </Stack>
         </Box>
       </Stack>

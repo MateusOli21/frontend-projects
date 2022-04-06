@@ -1,26 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { RiAddLine } from 'react-icons/ri'
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Heading,
   Icon,
-  Table,
-  Tbody,
-  Td,
+  Spinner,
   Text,
-  Th,
-  Thead,
-  Tr,
 } from '@chakra-ui/react'
 
 import { Header } from '@commons/components/modules/Header'
 import { Sidebar } from '@commons/components/modules/Sidebar'
 import { Pagination } from '@commons/components/modules/Pagination'
+import { UsersTable } from '@views/Users/components/UsersTable'
+import { useUsers } from '@views/Users/hooks'
 
 const UserList = () => {
+  const { data: users, isLoading, error, isSuccess, isFetching } = useUsers()
+
   return (
     <Box>
       <Header />
@@ -30,8 +28,15 @@ const UserList = () => {
 
         <Box flex="1" borderRadius={8} bg="gray.800" padding="8">
           <Flex mb="8" justify="space-between" align="center">
-            <Heading size="lg" fontWeight="normal">
+            <Heading
+              size="lg"
+              fontWeight="normal"
+              display="flex"
+              alignItems="center"
+              gap="4"
+            >
               Usuários
+              {isFetching && !isLoading && <Spinner size="sm" />}
             </Heading>
 
             <Button
@@ -45,36 +50,24 @@ const UserList = () => {
             </Button>
           </Flex>
 
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px="6" color="gray.300" width="8">
-                  <Checkbox colorScheme="blue" />
-                </Th>
-                <Th>Usuário</Th>
-                <Th>Data de cadastro</Th>
-              </Tr>
-            </Thead>
+          {isLoading && (
+            <Flex justify="center">
+              <Spinner />
+            </Flex>
+          )}
 
-            <Tbody>
-              <Tr>
-                <Th px="6">
-                  <Checkbox colorScheme="blue" />
-                </Th>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">Mateus Oliveira</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      mateus.oliveira
-                    </Text>
-                  </Box>
-                </Td>
-                <Td>04 de abril, 2021</Td>
-              </Tr>
-            </Tbody>
-          </Table>
+          {!isLoading && error && (
+            <Flex justify="center">
+              <Text>Falha ao obter dados dos usuários</Text>
+            </Flex>
+          )}
 
-          <Pagination />
+          {isSuccess && (
+            <>
+              <UsersTable users={users} />
+              <Pagination />
+            </>
+          )}
         </Box>
       </Flex>
     </Box>
