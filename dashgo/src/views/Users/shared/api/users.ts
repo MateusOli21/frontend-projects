@@ -1,4 +1,4 @@
-import { api } from '@services/api'
+import { fakerApi } from '@services/apis/fakerApi'
 import { UserProps } from '@views/Users/types'
 import { AxiosPromise } from 'axios'
 
@@ -11,7 +11,7 @@ type CreateUserProps = {
 }
 
 export const getUsers = (page = 1): AxiosPromise<{ users: UserProps[] }> => {
-  return api.get(BASE_URL, {
+  return fakerApi.get(BASE_URL, {
     params: {
       page,
     },
@@ -19,13 +19,13 @@ export const getUsers = (page = 1): AxiosPromise<{ users: UserProps[] }> => {
 }
 
 export const getUser = (userId: string): AxiosPromise<{ user: UserProps }> => {
-  return api.get(`${BASE_URL}/${userId}`)
+  return fakerApi.get(`${BASE_URL}/${userId}`)
 }
 
 export const createUser = (
   user: CreateUserProps
 ): AxiosPromise<{ user: UserProps }> => {
-  return api.post(BASE_URL, {
+  return fakerApi.post(BASE_URL, {
     user,
   })
 }

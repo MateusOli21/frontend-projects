@@ -21,7 +21,6 @@ const UserList = () => {
 
   const { data, isLoading, error, isSuccess, isFetching } =
     useUsers(currentPage)
-  console.log('🚀 ~ file: index.tsx ~ line 23 ~ UserList ~ data', data)
 
   const onPageChange = (selectedPage: number) => setCurrentPage(selectedPage)
 
