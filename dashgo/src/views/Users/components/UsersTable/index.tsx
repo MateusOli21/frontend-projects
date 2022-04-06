@@ -12,12 +12,15 @@ import {
 } from '@chakra-ui/react'
 
 import { UserProps } from '@views/Users/types'
+import { getUserById } from '@views/Users/entities/getUserById'
 
 interface UsersTableProps {
   users: UserProps[]
 }
 
 export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
+  const handlePrefetchUser = (userId: string) => getUserById(userId)
+
   return (
     <Table colorScheme="whiteAlpha">
       <Thead>
@@ -38,7 +41,17 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
             </Th>
             <Td>
               <Box>
-                <Text fontWeight="bold">{user.name}</Text>
+                <Text
+                  _hover={{
+                    cursor: 'pointer',
+                    color: 'blue.500',
+                    transition: 'all 0.2s ease-in',
+                  }}
+                  onMouseEnter={() => handlePrefetchUser(user.id)}
+                  fontWeight="bold"
+                >
+                  {user.name}
+                </Text>
                 <Text fontSize="sm" color="gray.300">
                   {user.email}
                 </Text>
