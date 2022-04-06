@@ -57,7 +57,7 @@ export const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
                 </Text>
               </Box>
             </Td>
-            <Td>{user.createdAt}</Td>
+            <Td>{user.created_at}</Td>
           </Tr>
         ))}
       </Tbody>

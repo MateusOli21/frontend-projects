@@ -1,4 +1,6 @@
 import React from 'react'
+import { useRouter } from 'next/router'
+import { useMutation } from 'react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -15,11 +17,9 @@ import {
 import { Header } from '@commons/components/modules/Header'
 import { Sidebar } from '@commons/components/modules/Sidebar'
 import { Input } from '@commons/components/elements/forms'
-
-interface CreateUserFormProps {
-  email: string
-  password: string
-}
+import { CreateUserFormProps } from '@views/Users/types'
+import { handleCreateNewUser } from '@views/Users/entities/createNewUser'
+import { queryClient } from '@services/queryClient'
 
 const createUserFormSchema = yup.object().shape({
   name: yup.string().required('O campo nome é obrigatório'),
@@ -31,12 +31,29 @@ const createUserFormSchema = yup.object().shape({
 })
 
 const CreateUser: React.FC = () => {
+  const router = useRouter()
+
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema),
   })
 
-  const onCreateUser: SubmitHandler<CreateUserFormProps> = (values) => {
+  const createNewUser = useMutation(handleCreateNewUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('users')
+    },
+  })
+
+  const onCreateUserSubmit: SubmitHandler<CreateUserFormProps> = async (
+    values
+  ) => {
     // send new user values to api
+    await createNewUser.mutateAsync({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    })
+
+    router.push('/users')
   }
 
   return (
@@ -52,7 +69,7 @@ const CreateUser: React.FC = () => {
           borderRadius={8}
           bg="gray.800"
           padding="8"
-          onSubmit={handleSubmit(onCreateUser)}
+          onSubmit={handleSubmit(onCreateUserSubmit)}
         >
           <Heading size="lg" fontWeight="normal">
             Criar usuário
@@ -84,6 +101,7 @@ const CreateUser: React.FC = () => {
                 id="password"
                 name="password"
                 label="Senha"
+                type="password"
                 {...register('password')}
                 error={formState.errors.password}
               />
@@ -91,6 +109,7 @@ const CreateUser: React.FC = () => {
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
+                type="password"
                 label="Confirme sua senha"
                 {...register('confirmPassword')}
                 error={formState.errors.confirmPassword}

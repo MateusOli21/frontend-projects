@@ -1,3 +1,2 @@
-import { UserProps } from './User'
-
-export type { UserProps }
+export type { UserProps } from './User'
+export type { CreateUserFormProps } from './CreateUser'
