@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { RiAddLine } from 'react-icons/ri'
 import {
   Box,
@@ -17,7 +17,12 @@ import { UsersTable } from '@views/Users/components/UsersTable'
 import { useUsers } from '@views/Users/hooks'
 
 const UserList = () => {
-  const { data: users, isLoading, error, isSuccess, isFetching } = useUsers()
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
+  const { data, isLoading, error, isSuccess, isFetching } =
+    useUsers(currentPage)
+
+  const onPageChange = (selectedPage: number) => setCurrentPage(selectedPage)
 
   return (
     <Box>
@@ -64,8 +69,12 @@ const UserList = () => {
 
           {isSuccess && (
             <>
-              <UsersTable users={users} />
-              <Pagination />
+              <UsersTable users={data.users} />
+              <Pagination
+                totalCountOfRegisters={data.totalCount}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+              />
             </>
           )}
         </Box>

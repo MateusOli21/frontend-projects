@@ -3,8 +3,16 @@ import { useQuery } from 'react-query'
 import { api } from '@services/api'
 import { UserProps } from '../types'
 
-const handleGetUsers = async (): Promise<UserProps[]> => {
-  const { data } = await api.get('/users')
+const handleGetUsers = async (
+  currentPage?: number
+): Promise<{ users: UserProps[]; totalCount: number }> => {
+  const { data, headers } = await api.get('/users', {
+    params: {
+      page: currentPage,
+    },
+  })
+
+  const totalRegisters = Number(headers['x-total-count'])
 
   const users = data.users?.map((user: UserProps) => ({
     ...user,
@@ -15,9 +23,9 @@ const handleGetUsers = async (): Promise<UserProps[]> => {
     }),
   }))
 
-  return users
+  return { users, totalCount: totalRegisters }
 }
 
-export function useUsers() {
-  return useQuery('users', handleGetUsers)
+export function useUsers(currentPage?: number) {
+  return useQuery(['users', currentPage], () => handleGetUsers(currentPage))
 }
