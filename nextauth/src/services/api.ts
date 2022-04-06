@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosRequestHeaders, HeadersDefaults } from 'axios';
+import axios, { AxiosError, HeadersDefaults } from 'axios';
+import { handleSignOut } from 'contexts/AuthContext';
 import { parseCookies, setCookie } from 'nookies';
 
 export interface CommonHeaderProps extends HeadersDefaults {
@@ -34,6 +35,7 @@ authApi.interceptors.response.use(
         if (!isRefreshing) {
           isRefreshing = true;
 
+          // process to refresh tokens
           authApi
             .post('/refresh', { refreshToken })
             .then(response => {
@@ -65,11 +67,11 @@ authApi.interceptors.response.use(
             });
         }
 
+        // create promise to resolve all error api call
         return new Promise((resolve, reject) => {
           failedRequestQueue.push({
             onSuccess: (token: string) => {
               if (originalConfig?.headers) {
-                console.log('aqui');
                 originalConfig.headers['Authorization'] = `Bearer ${token}`;
               }
 
@@ -81,8 +83,10 @@ authApi.interceptors.response.use(
           });
         });
       } else {
-        // logout user
+        handleSignOut();
       }
     }
+
+    return Promise.reject(error);
   }
 );

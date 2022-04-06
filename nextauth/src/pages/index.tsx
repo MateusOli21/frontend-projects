@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
 
-import styles from '@styles/Home.module.css';
 import { useAuthContext } from 'hooks';
+import { withSSRGuest } from 'utils/withSSRGuest';
+
+import styles from '@styles/Home.module.css';
 
 const Home: NextPage = () => {
   const [email, setEmail] = useState<string>('');
@@ -14,8 +16,6 @@ const Home: NextPage = () => {
     event.preventDefault();
 
     await signIn({ email, password });
-
-    //
   };
 
   return (
@@ -41,5 +41,11 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps = withSSRGuest('isAuthenticated', async () => {
+  return {
+    props: {},
+  };
+});
 
 export default Home;

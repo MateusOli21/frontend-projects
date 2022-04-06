@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { NextPage } from 'next';
 import { useAuthContext } from 'hooks';
+
 import { authApi } from '@services/api';
+import { withSSRGuest } from 'utils/withSSRGuest';
 
 const Dashboard: NextPage = () => {
   const { user } = useAuthContext();
@@ -18,5 +20,14 @@ const Dashboard: NextPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps = withSSRGuest(
+  'isNotAuthenticated',
+  async () => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default Dashboard;
