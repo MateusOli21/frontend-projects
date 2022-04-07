@@ -1,9 +1,11 @@
+import { destroyCookie, parseCookies } from 'nookies';
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from 'next';
-import { parseCookies } from 'nookies';
+
+import { AuthTokenError } from '@services/authApi/errors/AuthTokenError';
 
 export function withSSRGuest<P>(
   verification: 'isAuthenticated' | 'isNotAuthenticated',
@@ -11,7 +13,7 @@ export function withSSRGuest<P>(
 ) {
   return async (
     ctx: GetServerSidePropsContext
-  ): Promise<GetServerSidePropsResult<P>> => {
+  ): Promise<GetServerSidePropsResult<P> | undefined> => {
     const cookies = parseCookies(ctx);
 
     if (verification === 'isAuthenticated') {
@@ -36,6 +38,20 @@ export function withSSRGuest<P>(
       }
     }
 
-    return await fn(ctx);
+    try {
+      return await fn(ctx);
+    } catch (err) {
+      if (err instanceof AuthTokenError) {
+        destroyCookie(ctx, 'nextauth.token');
+        destroyCookie(ctx, 'nextauth.refreshToken');
+
+        return {
+          redirect: {
+            destination: '/',
+            permanent: false,
+          },
+        };
+      }
+    }
   };
 }

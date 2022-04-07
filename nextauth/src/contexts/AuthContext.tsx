@@ -2,7 +2,8 @@ import { createContext, ReactNode, useEffect, useState } from 'react';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import Router from 'next/router';
 
-import { authApi, CommonHeaderProps } from '@services/api';
+import { authApi } from '@services/authApi';
+import { CommonHeaderProps } from '@services/authApi/config';
 
 type AuthProviderProps = {
   children: ReactNode;
