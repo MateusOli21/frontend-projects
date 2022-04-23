@@ -24,7 +24,8 @@
       "@commons/*": ["commons/*"],
       "@modules/*": ["modules/*"],
       "@pages/*": ["pages/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@tests/*": ["tests/*"]
     }
   },
   "exclude": ["node_modules"],
