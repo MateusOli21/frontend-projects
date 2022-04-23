@@ -1,3 +1,3 @@
-# Rocketseat frontend projects
+# Frontend projects
 
-Este repositório armazena os projetos desenvolvidos durante estudos na trilha ignite de React.JS da Rocketseat.
+Este repositório armazena projetos desenvolvidos para aprender sobre desenvolvimento frontend e tecnologias relacionadas, utilizando Javascript e Typescript.
