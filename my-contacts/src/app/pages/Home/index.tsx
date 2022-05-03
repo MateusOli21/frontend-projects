@@ -1,11 +1,13 @@
 import { InputSearch } from '@ui/elements/InputSearch';
 import { BaseLayout } from '@ui/layouts/BaseLayout';
+import { ContactsListHeader } from '@domains/contacts/ui/components';
 
 export const HomePage = () => {
   return (
     <BaseLayout>
       <InputSearch />
-      <h1>Home</h1>
+
+      <ContactsListHeader registeredContacts={4} />
     </BaseLayout>
   );
 };
