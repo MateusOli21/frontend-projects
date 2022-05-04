@@ -6,7 +6,9 @@ interface OutlinedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
 
 export const OutlinedButton: React.FC<OutlinedButtonProps> = ({ children, ...props }) => {
   return (
-    <button className="p-2 border border-primary text-primary font-semibold rounded" {...props}>
+    <button
+      className="px-4 py-2 border border-primary text-primary font-semibold rounded"
+      {...props}>
       {children}
     </button>
   );
