@@ -2,6 +2,7 @@ import React from 'react';
 import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 
 import { IContact } from '@domains/contacts/types';
+import { formatPhone } from '@domains/contacts/utils';
 
 interface ContactCardProps {
   contact: IContact;
@@ -27,7 +28,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({ contact }) => {
 
       <div className="flex flex-col gap-1">
         <span className="text-gray-500 font-light">{contact?.email}</span>
-        <span className="text-gray-500 font-light">{contact?.phone}</span>
+        <span className="text-gray-500 font-light">{formatPhone(contact?.phone)}</span>
       </div>
     </div>
   );

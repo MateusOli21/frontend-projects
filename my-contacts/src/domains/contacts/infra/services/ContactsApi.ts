@@ -17,4 +17,10 @@ export class ContactsApi {
 
     return response;
   }
+
+  async createContact(newContact: IContact): Promise<AxiosResponse<{ contacts: IContact[] }>> {
+    const response = await this.api.post(BASE_URL, newContact);
+
+    return response;
+  }
 }

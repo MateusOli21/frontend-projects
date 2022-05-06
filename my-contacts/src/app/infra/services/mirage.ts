@@ -11,14 +11,14 @@ export function makeServer() {
     },
     factories: {
       contact: Factory.extend({
-        name(idx) {
+        name() {
           return faker.name.findName();
         },
         email() {
           return faker.internet.email().toLowerCase();
         },
         phone() {
-          return faker.phone.phoneNumber('9########');
+          return faker.phone.phoneNumber('119########');
         },
         category() {
           return 'discord';
@@ -38,7 +38,11 @@ export function makeServer() {
         return new Response(200, undefined, { contacts: contacts?.models });
       });
 
-      this.post('/contacts');
+      this.post('/contacts', (schema, request) => {
+        const newUser = JSON.parse(request.requestBody);
+
+        return schema.create('contact', newUser);
+      });
       this.get('/contacts/:phone');
 
       this.namespace = '';
