@@ -1,1 +1,1 @@
-export type { IContact } from './Contact';
+export type { IContact, ICreateContact } from './Contact';

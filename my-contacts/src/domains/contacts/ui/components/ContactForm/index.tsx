@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { IContact } from '@domains/contacts/types';
+import { ICreateContact } from '@domains/contacts/types';
 import { clearPhoneNumber, formatPhone } from '@domains/contacts/utils';
 import { contactsApi } from '@domains/contacts/infra/services';
 import { FilledButton } from '@ui/elements/buttons';
@@ -28,7 +28,7 @@ export const ContactForm: React.FC = () => {
     event.preventDefault();
 
     try {
-      const newContact: IContact = {
+      const newContact: ICreateContact = {
         name: nameRef.current?.value as string,
         email: emailRef.current?.value as string,
         phone: clearPhoneNumber(phone),

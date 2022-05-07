@@ -43,7 +43,10 @@ export function makeServer() {
 
         return schema.create('contact', newUser);
       });
-      this.get('/contacts/:phone');
+
+      this.get('/contacts/:id');
+
+      this.delete('/contacts/:id');
 
       this.namespace = '';
       this.passthrough();
