@@ -5,6 +5,7 @@ import { BaseLayout } from '@ui/layouts/BaseLayout';
 import { ContactCard, ContactsListHeader } from '@domains/contacts/ui/components';
 import { contactsApi } from '@domains/contacts/infra/services';
 import { IContact } from '@domains/contacts/types';
+import { showToast } from '@domains/contacts/utils';
 
 export const HomePage = () => {
   const [contacts, setContacts] = useState<IContact[]>([]);
@@ -21,7 +22,7 @@ export const HomePage = () => {
 
       setContacts(response.data?.contacts);
     } catch (err) {
-      console.log(err);
+      showToast('Ocorreu um erro ao tentar buscar sua lista de contatos', 'error');
     }
   };
 
@@ -36,9 +37,9 @@ export const HomePage = () => {
       <ContactsListHeader registeredContacts={contacts?.length} />
 
       <div className="w-full flex flex-col gap-2">
-        {contacts?.map((contact, index) => (
+        {contacts?.map(contact => (
           <ContactCard
-            key={index}
+            key={contact.id}
             contact={contact}
             handleUpdatedContactsAfterDelete={handleUpdatedContactsAfterDelete}
           />

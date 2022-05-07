@@ -1,8 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 
 import { IContact } from '@domains/contacts/types';
-import { formatPhone } from '@domains/contacts/utils';
+import { formatPhone, showToast } from '@domains/contacts/utils';
 import { contactsApi } from '@domains/contacts/infra/services';
 
 interface ContactCardProps {
@@ -14,14 +15,16 @@ export const ContactCard: React.FC<ContactCardProps> = ({
   contact,
   handleUpdatedContactsAfterDelete,
 }) => {
+  const navigate = useNavigate();
+
   const handleDeleteAccount = async () => {
     try {
       await contactsApi.deleteAccount(contact.id);
       handleUpdatedContactsAfterDelete(contact.id);
 
-      console.log('Deletou');
+      showToast('Contato deletado com sucesso');
     } catch (err) {
-      console.log('🚀 ~ file: index.tsx ~ line 16 ~ handleDeleteAccount ~ err', err);
+      showToast('Ocorreu um erro ao tentar excluir contato', 'error');
     }
   };
 
@@ -37,7 +40,11 @@ export const ContactCard: React.FC<ContactCardProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <BiEditAlt size={16} className="cursor-pointer text-black" />
+          <BiEditAlt
+            size={16}
+            className="cursor-pointer text-black"
+            onClick={() => navigate(`/contatos/${contact.id}`)}
+          />
           <BiTrashAlt
             size={16}
             className="cursor-pointer text-black"

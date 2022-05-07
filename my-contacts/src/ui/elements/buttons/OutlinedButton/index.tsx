@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React from 'react';
 
 interface OutlinedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

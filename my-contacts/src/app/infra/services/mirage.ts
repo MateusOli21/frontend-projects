@@ -25,12 +25,12 @@ export function makeServer() {
         },
       }),
     },
-    seeds(server) {
-      server.createList('contact', 3);
+    seeds(mirageServer) {
+      mirageServer.createList('contact', 3);
     },
     routes() {
       this.namespace = 'api';
-      this.timing = 350;
+      this.timing = 150;
 
       this.get('/contacts', schema => {
         const contacts = schema.all('contact');
@@ -42,6 +42,18 @@ export function makeServer() {
         const newUser = JSON.parse(request.requestBody);
 
         return schema.create('contact', newUser);
+      });
+
+      this.patch('/contacts/:id', (schema, request) => {
+        const newAttrs = JSON.parse(request.requestBody);
+
+        const contactId = request.params.id;
+
+        const note = schema.find('contact', contactId);
+
+        note?.update(newAttrs);
+
+        return new Response(200, {}, note?.attrs);
       });
 
       this.get('/contacts/:id');

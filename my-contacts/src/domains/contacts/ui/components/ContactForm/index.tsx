@@ -1,19 +1,26 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ICreateContact } from '@domains/contacts/types';
-import { clearPhoneNumber, formatPhone } from '@domains/contacts/utils';
-import { contactsApi } from '@domains/contacts/infra/services';
-import { FilledButton } from '@ui/elements/buttons';
 import { Input, Select } from '@ui/elements/forms';
+import { FilledButton } from '@ui/elements/buttons';
+import { contactsApi } from '@domains/contacts/infra/services';
+import { IContact, ICreateContact } from '@domains/contacts/types';
+import { clearPhoneNumber, formatPhone, showToast } from '@domains/contacts/utils';
 
 import { newContactSchema } from './schema';
 
-type TErrorYup = { errors?: string | string[] };
+const selectCategoryOptions = ['discord', 'instagram', 'facebook'];
 
-export const ContactForm: React.FC = () => {
-  const [phone, setPhone] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
+type TErrorYup = { errors?: string[] };
+
+interface ContactFormProps {
+  isEditContact?: boolean;
+  contact?: IContact;
+}
+
+export const ContactForm: React.FC<ContactFormProps> = ({ contact, isEditContact }) => {
+  const [phone, setPhone] = useState<string>(contact?.phone || '');
+  const [category, setCategory] = useState<string>(contact?.category || '');
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -37,34 +44,51 @@ export const ContactForm: React.FC = () => {
 
       await newContactSchema.validate(newContact, { abortEarly: true });
 
-      await contactsApi.createContact(newContact);
+      if (isEditContact && contact) {
+        await contactsApi.updateContact(contact.id, newContact);
+      } else {
+        await contactsApi.createContact(newContact);
+      }
 
       navigate('/');
     } catch (error) {
       const err = error as TErrorYup;
-      alert(err?.errors);
+
+      err?.errors?.map((er: string) => showToast(er, 'warn'));
     }
   };
 
+  useEffect(() => {
+    if (contact) {
+      setPhone(formatPhone(contact.phone));
+      setCategory(contact.category);
+    }
+
+    return () => setPhone('');
+  }, [contact]);
+
   return (
     <form onSubmit={onFormSubmit} className="w-full flex flex-col gap-2">
-      <Input placeholder="Nome" inputRef={nameRef} />
+      <Input placeholder="Nome" inputRef={nameRef} defaultValue={contact?.name} />
 
-      <Input placeholder="E-mail" inputRef={emailRef} />
+      <Input placeholder="E-mail" inputRef={emailRef} defaultValue={contact?.email} />
 
       <Input placeholder="Telefone" value={phone} onChange={onChangePhoneValue} />
 
       <Select
         className="w-full"
         placeholder="Categoria do contato"
+        value={contact?.category}
         onChange={event => setCategory(event.target.value)}>
-        <option value="discord">Discord</option>
-        <option value="instagram">Instagram</option>
-        <option value="facebook">Facebook</option>
+        {selectCategoryOptions.map(item => (
+          <option key={item} value={item} className="capitalize">
+            {item}
+          </option>
+        ))}
       </Select>
 
       <FilledButton type="submit" className="w-full mt-4 h-12">
-        Cadastrar
+        {isEditContact ? 'Salvar' : 'Cadastrar'}
       </FilledButton>
     </form>
   );
