@@ -69,14 +69,33 @@ export const ContactForm: React.FC<ContactFormProps> = ({ contact, isEditContact
 
   return (
     <form onSubmit={onFormSubmit} className="w-full flex flex-col gap-2">
-      <Input placeholder="Nome" inputRef={nameRef} defaultValue={contact?.name} />
+      <Input
+        data-testid="inputName"
+        placeholder="Nome"
+        name="name"
+        inputRef={nameRef}
+        defaultValue={contact?.name}
+      />
 
-      <Input placeholder="E-mail" inputRef={emailRef} defaultValue={contact?.email} />
+      <Input
+        placeholder="E-mail"
+        data-testid="inputEmail"
+        name="email"
+        inputRef={emailRef}
+        defaultValue={contact?.email}
+      />
 
-      <Input placeholder="Telefone" value={phone} onChange={onChangePhoneValue} />
+      <Input
+        placeholder="Telefone"
+        data-testid="inputPhone"
+        name="phone"
+        value={phone}
+        onChange={onChangePhoneValue}
+      />
 
       <Select
         className="w-full"
+        name="category"
         placeholder="Categoria do contato"
         value={contact?.category}
         onChange={event => setCategory(event.target.value)}>

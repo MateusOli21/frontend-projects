@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { OutlinedButton } from '@ui/elements/buttons';
+import { OutlinedButton } from '@ui/elements/buttons/OutlinedButton';
 
 interface ContactsListHeaderProps {
   registeredContacts: number;
